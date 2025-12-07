@@ -1,0 +1,173 @@
+ansible-playbook -i inventory.ini ass 
+
+PLAY [Configure routers with hostnames and interface descriptions] *************
+
+TASK [Set hostname] ************************************************************
+[WARNING]: ansible-pylibssh not installed, falling back to paramiko
+[WARNING]: To ensure idempotency and correct diff the input configuration lines
+should be similar to how they appear if present in the running configuration on
+device
+changed: [Core-Router-East]
+changed: [Core-Router-West]
+
+TASK [Debug hostname configuration result] *************************************
+ok: [Core-Router-East] => {
+    "hostname_result": {
+        "banners": {},
+        "changed": true,
+        "commands": [
+            "hostname \"Core-Router-East\""
+        ],
+        "failed": false,
+        "updates": [
+            "hostname \"Core-Router-East\""
+        ],
+        "warnings": [
+            "To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device"
+        ]
+    }
+}
+ok: [Core-Router-West] => {
+    "hostname_result": {
+        "banners": {},
+        "changed": true,
+        "commands": [
+            "hostname \"Core-Router-West\""
+        ],
+        "failed": false,
+        "updates": [
+            "hostname \"Core-Router-West\""
+        ],
+        "warnings": [
+            "To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device"
+        ]
+    }
+}
+
+TASK [Set interface description on Ethernet0/0] ********************************
+changed: [Core-Router-West]
+changed: [Core-Router-East]
+
+TASK [Debug interface description configuration result] ************************
+ok: [Core-Router-East] => {
+    "interface_result": {
+        "banners": {},
+        "changed": true,
+        "commands": [
+            "interface Ethernet0/0",
+            "description \"Link to Management Network - East Side\""
+        ],
+        "failed": false,
+        "updates": [
+            "interface Ethernet0/0",
+            "description \"Link to Management Network - East Side\""
+        ],
+        "warnings": [
+            "To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device"
+        ]
+    }
+}
+ok: [Core-Router-West] => {
+    "interface_result": {
+        "banners": {},
+        "changed": true,
+        "commands": [
+            "interface Ethernet0/0",
+            "description \"Link to Management Network - West Side\""
+        ],
+        "failed": false,
+        "updates": [
+            "interface Ethernet0/0",
+            "description \"Link to Management Network - West Side\""
+        ],
+        "warnings": [
+            "To ensure idempotency and correct diff the input configuration lines should be similar to how they appear if present in the running configuration on device"
+        ]
+    }
+}
+
+TASK [Verify hostname configuration] *******************************************
+ok: [Core-Router-West]
+ok: [Core-Router-East]
+
+TASK [Debug hostname output] ***************************************************
+ok: [Core-Router-East] => {
+    "hostname_output.stdout_lines": [
+        [
+            "hostname Core-Router-East"
+        ]
+    ]
+}
+ok: [Core-Router-West] => {
+    "hostname_output.stdout_lines": [
+        [
+            "hostname Core-Router-West"
+        ]
+    ]
+}
+
+TASK [Verify interface description configuration] ******************************
+ok: [Core-Router-East]
+ok: [Core-Router-West]
+
+TASK [Debug interface description output] **************************************
+ok: [Core-Router-East] => {
+    "interface_output.stdout_lines": [
+        [
+            "Building configuration...",
+            "",
+            "Current configuration : 125 bytes",
+            "!",
+            "interface Ethernet0/0",
+            " description \"Link to Management Network - East Side\"",
+            " ip address 192.168.100.100 255.255.255.0",
+            "end"
+        ]
+    ]
+}
+ok: [Core-Router-West] => {
+    "interface_output.stdout_lines": [
+        [
+            "Building configuration...",
+            "",
+            "Current configuration : 125 bytes",
+            "!",
+            "interface Ethernet0/0",
+            " description \"Link to Management Network - West Side\"",
+            " ip address 192.168.100.101 255.255.255.0",
+            "end"
+        ]
+    ]
+}
+
+TASK [Set hostname verification string] ****************************************
+ok: [Core-Router-West]
+ok: [Core-Router-East]
+
+TASK [Verify hostname matches expected value] **********************************
+ok: [Core-Router-East] => {
+    "changed": false,
+    "msg": "Hostname verified successfully: Core-Router-East"
+}
+ok: [Core-Router-West] => {
+    "changed": false,
+    "msg": "Hostname verified successfully: Core-Router-West"
+}
+
+TASK [Set interface description verification string] ***************************
+ok: [Core-Router-East]
+ok: [Core-Router-West]
+
+TASK [Verify interface description matches expected value] *********************
+ok: [Core-Router-East] => {
+    "changed": false,
+    "msg": "Interface description verified successfully: Link to Management Network - East Side"
+}
+ok: [Core-Router-West] => {
+    "changed": false,
+    "msg": "Interface description verified successfully: Link to Management Network - West Side"
+}
+
+PLAY RECAP *********************************************************************
+Core-Router-East           : ok=12   changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+Core-Router-West           : ok=12   changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
